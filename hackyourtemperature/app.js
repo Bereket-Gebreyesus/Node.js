@@ -6,27 +6,10 @@ const app = express();
 
 app.use(express.json());
 
-//GET route to sent message
 app.get('/', async (req, res)=>{
   res.send('hello from backend to frontend!');
 });
 
-//POST route to handle weather data
-// app.post('/weather', async(req, res)=> {
-//   const cityName = req.body.cityName;
-//   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${keys.API_KEY}`;
-//   try {
-//     const response = await fetch(apiUrl);
-//     if (!response.ok) {
-//       throw new Error('Failed to fetch weather data');
-//     }
-//     const weatherData = await response.json();
-//     res.json(weatherData);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-  
-// });
 app.post('/weather', async (req, res) => {
   const cityName = req.body.cityName;
 
@@ -41,7 +24,7 @@ app.post('/weather', async (req, res) => {
 
       // Check if response is successful
       if (!response.ok) {
-          // Handle specific error cases (e.g., city not found)
+          // Handle specific error cases
           if (response.status === 404) {
               return res.status(404).json({ error: 'City not found' });
           }
@@ -51,7 +34,6 @@ app.post('/weather', async (req, res) => {
       const weatherData = await response.json();
       res.json(weatherData);
   } catch (error) {
-      // Handle generic server error
       console.error('Error fetching weather data:', error);
       res.status(500).json({ error: 'Internal Server Error' });
   }
